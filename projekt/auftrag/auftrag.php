@@ -2,16 +2,37 @@
 <html>
     <head>
 
-            <!-- Required meta tags -->
+        <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-        <title>Auftrag</title>
+        <title>Auftrag</title>    
 
     <style>
+        ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: rgb(209, 202, 202);
+        }
+        li {
+        float: left;
+        }
+        li a {
+        display: block;
+        color: rgb(49, 8, 8);
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        }
+        li a:hover:not(.active) {
+        background-color: rgb(190, 182, 182);
+        }
+
         #myInput {
         background-position: 10px 10px;
         background-repeat: no-repeat;
@@ -63,29 +84,35 @@
         background-color: #f1f1f1;
         }
 
- 
-
     </style>
-    </head>
+
+<ul>
+    <ul> 
+      <li><a href="/kfz/projekt/index.php">Home(Kunden)</a></li>
+      <li><a href="/kfz/projekt/auftrag/auftrag.php">Auftrag</a></li>
+      <li><a href="/kfz/projekt/teile/teile.php">Teile</a></li>
+      <li><a href="/kfz/projekt/fahrzeuge/fahrzeug.html">Reperatur</a></li>  
+    </ul>
+</ul>
+</head>
 <body>
 
 <?php
-
-
+// Neuen Auftrag anlegen
 echo "<form method='post'>";
 echo "<input type='submit' class='btn btn-info btn-block' name='eintragen' formaction='auftragneu.php' value='Neuen Auftrag erstellen'>";
 echo "<br>";
 echo "</form>";
 ?>
 
-
-
 <?php 
 session_start();
+//Variable aus Session laden
 if(isset($_SESSION['kundennummerID'])){
     $kdnr2 = $_SESSION['kundennummerID'];
 }
 
+//Eingabe zur Verarbeitung
 echo "
 <form action='" . $_SERVER['PHP_SELF'] . "' method='post'>
       
@@ -329,35 +356,31 @@ echo "</table>";
         
     //Inhalt
     
-    while($row2 = mysqli_fetch_assoc($result4)){
-        
+        while($row2 = mysqli_fetch_assoc($result4)){
             
-        echo "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
-        echo"<tr>" .
-            "<td>" ."<input type='hidden' name='auswahledit' value='".$row2['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftragedit.php' value='Edit' />" . "</td>" .
-            "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row2['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>" .  
-            "<td>" ."<input type='submit' class='btn btn-danger btn-lg' name='auswahl".$row2['repid']."' formaction='auftragdelet.php' value='Delet'>" . "</td>" . 
-            "<td>" . $row2['repid']. "</td>" .
-            "<td>" . $row2["kundennummer"] . "</td>" .
-            "<td>" . $row2["datum"] . "</td>" .
-            "<td>" . $row2["marke"] . "</td>" .
-            "<td>" . $row2["typ"] . "</td>" .
-            "<td>" . $row2["kennzeichen"] . "</td>" .
-            "<td>" . $row2["bemerkung"] . "</td>" .
-            "</tr>";
-        echo "</form>";
-    }
+                
+            echo "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
+            echo"<tr>" .
+                "<td>" ."<input type='hidden' name='auswahledit' value='".$row2['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftragedit.php' value='Edit' />" . "</td>" .
+                "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row2['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>" .  
+                "<td>" ."<input type='submit' class='btn btn-danger btn-lg' name='auswahl".$row2['repid']."' formaction='auftragdelet.php' value='Delet'>" . "</td>" . 
+                "<td>" . $row2['repid']. "</td>" .
+                "<td>" . $row2["kundennummer"] . "</td>" .
+                "<td>" . $row2["datum"] . "</td>" .
+                "<td>" . $row2["marke"] . "</td>" .
+                "<td>" . $row2["typ"] . "</td>" .
+                "<td>" . $row2["kennzeichen"] . "</td>" .
+                "<td>" . $row2["bemerkung"] . "</td>" .
+                "</tr>";
+            echo "</form>";
+        }
     
     echo "</table>";
-    
     }
-
 }
-
 
 ?>
      
-
 <!-- Modal -->
 <div id="myModal"  class="modal fade" role="dialog" tabindex="-1">
   <div class="modal-dialog modal-lg" role="document">
@@ -432,10 +455,6 @@ echo "</table>";
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 <script> 
 
-    // Größe von Modal
-
-
-
     // Kundennummer übertrag aus Modal
     $('.pickCustomer').click(function() {
         var name = $(this).val();
@@ -449,17 +468,17 @@ echo "</table>";
         filter = input.value.toUpperCase();
         table = document.getElementById('myTable');
         tr = table.getElementsByTagName('tr');
-        for (i = 0 ; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName('td')[1];
-        if (td) {
-            txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = '';
-            } else {
-            tr[i].style.display = 'none';
+            for (i = 0 ; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName('td')[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = '';
+                    } else {
+                        tr[i].style.display = 'none';
+                    }
+                }       
             }
-        }       
-        }
-        }
+    }
 </script>   
 </body>          
