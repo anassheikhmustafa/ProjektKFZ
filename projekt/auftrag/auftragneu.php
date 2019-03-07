@@ -138,6 +138,7 @@
 
 
 <?php
+session_start();
     if(isset($_POST["neuenAuftraganlegen"])){
 
     //Verbindung zur Datenbank herstellen
@@ -166,6 +167,7 @@
 
 
     if($check) {
+        
         
         echo "Ein neuer Auftrag mit der Nummer:" . " " . $rid . " " . " wurde erfolgreich hinzugefügt, möchten Sie mit der Arikelerfassung starten?";
         echo "<form method='post'>";

@@ -14,10 +14,11 @@ div.sticky {
   position: -webkit-sticky;
   position: sticky;
   bottom: 0;
-  padding: 20px;
-  width: 50%;
+  padding: 40px;
+  width: 100%;
   font-size: 15px;
-  background-color: #ffffff;
+  background-color: #F8F8FF;
+  
 }
 * {
   box-sizing: border-box;
@@ -66,8 +67,14 @@ $repidsession = $_POST['auswahledit'];
 $_SESSION['auswahledit'] = $repidsession;}
 if(isset($_POST["eintragen"])){
     $repidsession = $_POST['eintragen'];
-    $_SESSION['auswahledit'] = $repidsession;}
-$name = $_SESSION['auswahledit'];
+    $_SESSION['eintragen'] = $repidsession;}
+
+    if(isset($_SESSION["auswahledit"])){
+   $name = $_SESSION['auswahledit'];}
+   else{
+    $name = $_SESSION['eintragen']; 
+   }
+
  
 // 1. Verbindung zur Datenbank herstellen
 $host_name = 'localhost';
@@ -85,18 +92,29 @@ mysqli_query($connect3, "SET NAMES 'utf8'");
 
     // Datenbankabfrage starten
     $id = $name;
-    $abfrage2 = "SELECT * FROM reparatur WHERE repid = $id";
+    $abfrage2 = "SELECT reparatur.`fzid`, `repid`,`kennzeichen`, `datum`, `marke`, `typ`, `bemerkung`, `vorname`, `kundennummer`, `nachname` FROM reparatur LEFT JOIN fahrzeug on fahrzeug.`fzid` = reparatur.`fzid`
+    LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid`  WHERE repid = $id";
     $result2 = mysqli_query($connect2, $abfrage2);
 
     // Datensatz in Variablen speichern
     $dsatz2 = mysqli_fetch_assoc($result2);
     $bez2 = $dsatz2["bemerkung"];
     $datum2 = $dsatz2["datum"];
+    $kdnr = $dsatz2["kundennummer"];
+    $kdnam = $dsatz2["nachname"];
+    $marke = $dsatz2["marke"];
+    $typ = $dsatz2["typ"];
+    $kz = $dsatz2["kennzeichen"];
+
+   
+        $kundennrsession = $dsatz2['kundennummer'];
+        $_SESSION['kundennummerID'] = $kundennrsession;
+        $kdnr2 = $_SESSION['kundennummerID'];
 
     // Das Bearbeiten-Formular anzeigen
-    echo "<p>" . "Reparaturauftrag: " . "$id" . "</p>";
-    echo "<p>" . "Bemerkung: " . "$bez2" . "</p>";
-    echo "<p>" . "Datum: " . "$datum2" . "</p>";
+    echo "<p>" . "<b>" . "Kunde: " . "</b>". "$kdnr" . " " . "$kdnam". " " . "<b>" . "Fahrzeug: " . "</b>". "$marke" . " " . "$typ" . " " . "$kz" .  "</p>";
+    echo "<p>" . "<b>" . "Reparaturauftrag: " . "</b>". "$id" . "<b>" . " " . "Datum: " . "</b>". "$datum2" . "</p>";
+    echo "<p>" . "<b>" . "Bemerkung: "  . "</b>" . "$bez2" . "</p>";
     echo "</form>";
 
     echo "<a href='auftrag.php'  class='btn btn-secondary btn-lg'>Zurück zur Übersicht</a>";

@@ -12,35 +12,6 @@
         <title>Auftrag</title>
 
     <style>
-
-        ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: rgb(209, 202, 202);
-        }
-        li {
-        float: left;
-        }
-        li a {
-        display: block;
-        color: rgb(49, 8, 8);
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        }
-        li a:hover:not(.active) {
-        background-color: rgb(190, 182, 182);
-        }
-        .active {
-        background-color: #4CAF50;
-        }
- 
-
-
-
-
         #myInput {
         background-position: 10px 10px;
         background-repeat: no-repeat;
@@ -57,6 +28,7 @@
         border: 1px solid #ddd;
         font-size: 18px;
         }
+
 
         #myTable th, #myTable td {
         text-align: left;
@@ -91,26 +63,29 @@
         background-color: #f1f1f1;
         }
 
+ 
+
     </style>
     </head>
 <body>
-<ul>
-    <ul> 
-      <li><a href="/kfz/projekt/index.php"> Home(Kunden)</a></li>
-      <li><a href="/kfz/projekt/auftrag/auftrag.php">Auftrag</a></li>
-      <li><a href="/kfz/projekt/teile/teile.php">Teile</a></li>
-      <li><a href="/kfz/projekt/reperatur/reperatur.php">Reperatur</a></li>  
-    </ul>
-  </ul>
+
 <?php
+
 
 echo "<form method='post'>";
 echo "<input type='submit' class='btn btn-info btn-block' name='eintragen' formaction='auftragneu.php' value='Neuen Auftrag erstellen'>";
 echo "<br>";
+echo "</form>";
 ?>
 
+
+
 <?php 
-error_reporting(E_ALL);
+session_start();
+if(isset($_SESSION['kundennummerID'])){
+    $kdnr2 = $_SESSION['kundennummerID'];
+}
+
 echo "
 <form action='" . $_SERVER['PHP_SELF'] . "' method='post'>
       
@@ -118,19 +93,84 @@ echo "
         <tr>
             <td><center><button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#myModal' >Kunde suchen</button></center></td>
             <td><div class='form-group'><input type='text' class='form-control' id='namap'  placeholder='Kundennummer' name='namap'></div></td>
-            <td><center><input type='hidden' name='abgeschickt' />
-            <input type='submit'  class='btn btn-info btn-lg'></input></center></td>
+            <td><center><input type='hidden' name='abgeschickt' /><input type='submit'  class='btn btn-info btn-lg'></input></center></td>
         </tr>
     </table>
 </form>";
 
-  
+
 if (isset($_POST['abgeschickt'])){
     if( empty ($_POST['namap']) == TRUE){
-       echo "<div class='alert alert-danger'>" . "<strong>" . "Achtung! " . "</strong>" . "Sie müssen einen Kunden auswählen!" . "</div>";
-       
-    } else {
-    $kdnnam = $_POST['namap'];
+        session_destroy(); 
+
+        echo "<div class='alert alert-danger'>" . "<strong>" . "Hinweis! " . "</strong>" . "Kein Kunde ausgewählt, alle Aufträge werden angezeigt" . "</div>" . "<br>" ;
+     
+ 
+ 
+            //Verbindung zur Datenbank herstellen
+            $host_name = 'localhost';
+            $user_name = 'root';
+            $password = '';
+            $database = 'dbkfz';
+            
+            $connect = mysqli_connect($host_name, $user_name, $password, $database);
+            mysqli_query($connect, "SET NAMES 'utf8'");
+            
+            
+            // Anzeige aller Datensätze der Tabelle
+            $abfrage = "SELECT reparatur.`fzid`, `repid`,`kennzeichen`, `datum`, `marke`, `typ`, `bemerkung`, `vorname`, `kundennummer`, `nachname` FROM reparatur LEFT JOIN fahrzeug on fahrzeug.`fzid` = reparatur.`fzid`
+            LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid`  Order By `datum` DESC";
+            
+            $result = mysqli_query($connect, $abfrage);
+            $result2 = mysqli_query($connect, $abfrage);
+            $result3 = mysqli_query($connect, $abfrage);
+            
+            
+            echo "<table  id='myTabledd'  border='1' cellpadding='5'>
+            <tr class='header'>
+            <th style='width:5%;'>Row</th>
+            <th style='width:5%;'>Main</th>
+            <th style='width:5%;'>Delet</th>
+            <th style='width:5%;'>ID</th>
+            <th style='width:5%;'>KdNr</th>
+            <th style='width:10%;'>Datum</th>
+            <th style='width:5%;'>Marke</th>
+            <th style='width:5%;'>Type</th>
+            <th style='width:5%;'>Kennzeichen</th> 
+            <th>Bemerkung</th>
+            </tr>";
+                
+            //Inhalt
+            
+            while($row = mysqli_fetch_assoc($result)){
+                
+                    
+                echo "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
+                echo"<tr>" .
+                    "<td>" ."<input type='hidden' name='auswahledit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftragedit.php' value='Edit' />" . "</td>" .
+                    "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>" .  
+                    "<td>" ."<input type='submit' class='btn btn-danger btn-lg' name='auswahl".$row['repid']."' formaction='auftragdelet.php' value='Delet'>" . "</td>" . 
+                    "<td>" . $row['repid']. "</td>" .
+                    "<td>" . $row["kundennummer"] . "</td>" .
+                    "<td>" . $row["datum"] . "</td>" .
+                    "<td>" . $row["marke"] . "</td>" .
+                    "<td>" . $row["typ"] . "</td>" .
+                    "<td>" . $row["kennzeichen"] . "</td>" .
+                    "<td>" . $row["bemerkung"] . "</td>" .
+                    "</tr>";
+                echo "</form>";
+            }
+            
+            echo "</table>";
+               
+            
+            
+    
+    }  else {
+        
+
+        $kdnnam = $_POST['namap'];
+   
     
         //Verbindung zur Datenbank herstellen
         $host_name = 'localhost';
@@ -144,7 +184,7 @@ if (isset($_POST['abgeschickt'])){
 
         // Anzeige aller Datensätze der Tabelle
         $abfrage = "SELECT reparatur.`fzid`, `repid`,`kennzeichen`, `datum`, `marke`, `typ`, `bemerkung`, `vorname`, `kundennummer`, `nachname` FROM reparatur LEFT JOIN fahrzeug on fahrzeug.`fzid` = reparatur.`fzid`
-        LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid` WHERE kundennummer like '%$kdnnam%' Order By `datum` DESC";
+        LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid` WHERE kundennummer like '%$kdnnam%'  Order By `datum` DESC";
 
         $result = mysqli_query($connect, $abfrage);
         $result2 = mysqli_query($connect, $abfrage);
@@ -195,16 +235,132 @@ if (isset($_POST['abgeschickt'])){
         }
       
         echo "</table>";
+    
             }
+} else {
+
+//Verbindung zur Datenbank herstellen
+$host_name = 'localhost';
+$user_name = 'root';
+$password = '';
+$database = 'dbkfz';
+
+$connect = mysqli_connect($host_name, $user_name, $password, $database);
+mysqli_query($connect, "SET NAMES 'utf8'");
+
+
+// Anzeige aller Datensätze der Tabelle
+
+if( empty ($_SESSION['kundennummerID']) == TRUE){
+$abfrage = "SELECT reparatur.`fzid`, `repid`,`kennzeichen`, `datum`, `marke`, `typ`, `bemerkung`, `vorname`, `kundennummer`, `nachname` FROM reparatur LEFT JOIN fahrzeug on fahrzeug.`fzid` = reparatur.`fzid`
+LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid`   Order By `datum` DESC";
+
+
+$result = mysqli_query($connect, $abfrage);
+$result2 = mysqli_query($connect, $abfrage);
+$result3 = mysqli_query($connect, $abfrage);
+
+
+echo "<table  id='myTabledd'  border='1' cellpadding='5'>
+<tr class='header'>
+<th style='width:5%;'>Row</th>
+<th style='width:5%;'>Main</th>
+<th style='width:5%;'>Delet</th>
+<th style='width:5%;'>ID</th>
+<th style='width:5%;'>KdNr</th>
+<th style='width:10%;'>Datum</th>
+<th style='width:5%;'>Marke</th>
+<th style='width:5%;'>Type</th>
+<th style='width:5%;'>Kennzeichen</th> 
+<th>Bemerkung</th>
+</tr>";
+    
+//Inhalt
+
+while($row = mysqli_fetch_assoc($result)){
+    
+        
+    echo "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
+    echo"<tr>" .
+        "<td>" ."<input type='hidden' name='auswahledit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftragedit.php' value='Edit' />" . "</td>" .
+        "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>" .  
+        "<td>" ."<input type='submit' class='btn btn-danger btn-lg' name='auswahl".$row['repid']."' formaction='auftragdelet.php' value='Delet'>" . "</td>" . 
+        "<td>" . $row['repid']. "</td>" .
+        "<td>" . $row["kundennummer"] . "</td>" .
+        "<td>" . $row["datum"] . "</td>" .
+        "<td>" . $row["marke"] . "</td>" .
+        "<td>" . $row["typ"] . "</td>" .
+        "<td>" . $row["kennzeichen"] . "</td>" .
+        "<td>" . $row["bemerkung"] . "</td>" .
+        "</tr>";
+    echo "</form>";
 }
+
+echo "</table>";
+
+} else {
+    $kdnr2 = $_SESSION['kundennummerID'];
+
+
+    $abfrage4 = "SELECT reparatur.`fzid`, `repid`,`kennzeichen`, `datum`, `marke`, `typ`, `bemerkung`, `vorname`, `kundennummer`, `nachname` FROM reparatur LEFT JOIN fahrzeug on fahrzeug.`fzid` = reparatur.`fzid`
+    LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid` WHERE kundennummer like '%$kdnr2%'  Order By `datum` DESC";
+  
+    
+    $result4 = mysqli_query($connect, $abfrage4);
+    $dsatz4 = mysqli_fetch_assoc($result4);
+    $nameue = $dsatz4["nachname"];
+    $nameue2 = $dsatz4["vorname"];
+    
+    echo "<br />" . "<div class='alert alert-primary' role='alert'>" . $kdnr2 . $nameue. $nameue2 . "</div>" . "<br />";
+    
+    echo "<table  id='myTabledd'  border='1' cellpadding='5'>
+    <tr class='header'>
+    <th style='width:5%;'>Row</th>
+    <th style='width:5%;'>Main</th>
+    <th style='width:5%;'>Delet</th>
+    <th style='width:5%;'>ID</th>
+    <th style='width:5%;'>KdNr</th>
+    <th style='width:10%;'>Datum</th>
+    <th style='width:5%;'>Marke</th>
+    <th style='width:5%;'>Type</th>
+    <th style='width:5%;'>Kennzeichen</th> 
+    <th>Bemerkung</th>
+    </tr>";
+        
+    //Inhalt
+    
+    while($row2 = mysqli_fetch_assoc($result4)){
+        
+            
+        echo "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
+        echo"<tr>" .
+            "<td>" ."<input type='hidden' name='auswahledit' value='".$row2['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftragedit.php' value='Edit' />" . "</td>" .
+            "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row2['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>" .  
+            "<td>" ."<input type='submit' class='btn btn-danger btn-lg' name='auswahl".$row2['repid']."' formaction='auftragdelet.php' value='Delet'>" . "</td>" . 
+            "<td>" . $row2['repid']. "</td>" .
+            "<td>" . $row2["kundennummer"] . "</td>" .
+            "<td>" . $row2["datum"] . "</td>" .
+            "<td>" . $row2["marke"] . "</td>" .
+            "<td>" . $row2["typ"] . "</td>" .
+            "<td>" . $row2["kennzeichen"] . "</td>" .
+            "<td>" . $row2["bemerkung"] . "</td>" .
+            "</tr>";
+        echo "</form>";
+    }
+    
+    echo "</table>";
+    
+    }
+
+}
+
+
 ?>
      
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
-
-    <!-- Modal content-->
+<div id="myModal"  class="modal fade" role="dialog" tabindex="-1">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Kundenauswahl</h4>
@@ -254,18 +410,20 @@ if (isset($_POST['abgeschickt'])){
                     "<td>" . $dsatzmodal["vorname"] . "</td>" .
                     "</tr>";
                     }
+                echo "</form>";
                 echo "</table>";
+                
             ?>
-      </div>
-      <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
       </div>
     </div>
 
   </div>
 </div>
 
-</form>
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -273,6 +431,12 @@ if (isset($_POST['abgeschickt'])){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 <script> 
+
+    // Größe von Modal
+
+
+
+    // Kundennummer übertrag aus Modal
     $('.pickCustomer').click(function() {
         var name = $(this).val();
         $('#namap').val(name);

@@ -14,7 +14,10 @@ $user_name = 'root';
 $password = '';
 $database = 'dbkfz';
 $connect = mysqli_connect($host_name, $user_name, $password, $database);
+
 mysqli_query($connect, "SET NAMES 'utf8'");
+
+
 
 //Ausgewählte Datensätze löschen:
 for($i=1; $i<=999999; $i++){
@@ -25,6 +28,7 @@ for($i=1; $i<=999999; $i++){
         <h1>Datensatz mit der ID $i wurde gelöscht. </h1></div><br>";
     }
 }
+
 ?>
 
 <a href="auftragedit.php" class="btn btn-info btn-lg">Zurück zum Auftrag</a>

@@ -24,20 +24,25 @@ $database = 'dbkfz';
 
 $connect = mysqli_connect($host_name, $user_name, $password, $database);
 mysqli_query($connect, "SET NAMES 'utf8'");
-+
+
 
 // 2. Prüfe Button-Auswahl
 if(isset($_POST["auswahlkopfedit"])){
 
     // 3. Datenbankabfrage starten
     $idr = $_POST["auswahlkopfedit"];
-    $abfrage = "SELECT * FROM reparatur WHERE repid = $idr";
+    $abfrage = "SELECT reparatur.`fzid`, `repid`,`kennzeichen`, `datum`, `marke`, `typ`, `bemerkung`, `vorname`, `kundennummer`, `nachname` FROM reparatur LEFT JOIN fahrzeug on fahrzeug.`fzid` = reparatur.`fzid`
+    LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid`   WHERE repid = $idr";
     $result = mysqli_query($connect, $abfrage);
 
     // 4. Datensatz in Variablen speichern
     $dsatz = mysqli_fetch_assoc($result);
     $bez = $dsatz["bemerkung"];
     $datum = $dsatz["datum"];
+
+    $kundennrsession = $dsatz['kundennummer'];
+    $_SESSION['kundennummerID'] = $kundennrsession;
+    $kdnr2 = $_SESSION['kundennummerID'];
 
     // 5. Das Bearbeiten-Formular anzeigen
     echo "<form action='auftrageditkopf.php' method='post'>";
@@ -47,7 +52,8 @@ if(isset($_POST["auswahlkopfedit"])){
     echo "<input name='bearbeitungAbschicken' class='btn btn-primary btn-lg active' value='Bearbeitung abschließen' type='submit'>";
     echo "</form>";
 
-    echo "<a href='javascript:history.back(1)'>Zurück zur Übersicht</a>";
+    echo "<a href='auftrag.php'  class='btn btn-secondary btn-lg'>Zurück zur Übersicht</a>";
+    
 }
 
 //6. Datensatz aktualisieren mit UPDATE
@@ -66,12 +72,12 @@ WHERE repid = $id";
     mysqli_query($connect, $update);
  
     echo "Datensatz bearbeitet.<br>";
-    echo "<a href='javascript:window.history.go(-1)'>Zurück zur Übersicht</a>";
+    echo "<a href='auftrag.php'  class='btn btn-secondary btn-lg'>Zurück zur Übersicht</a>";
 }
 //Wenn der Nutzer in auftrag.php keine Auswahl getroffen hat:
 if(!isset($_POST["auswahlkopfedit"]) && !isset($_POST["bearbeitungAbschicken"])){
     echo "Es wurde kein Datensatz ausgewählt.<br>";
-    echo "<a href='javascript:history.back(1)'>Zurück zur Übersicht</a>";
+    echo "<a href='auftrag.php'  class='btn btn-secondary btn-lg'>Zurück zur Übersicht</a>";
 }
 
 
