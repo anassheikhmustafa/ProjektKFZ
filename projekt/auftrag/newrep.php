@@ -77,11 +77,10 @@ if(isset($_POST["neuenArtikelanlegen"])){
 
 <!--<form action="auftragedit.php" method="post">  <p><input name="teileid"> Teileid</p> -->
 <form  method='post'>
-    <p><button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#myModal' >Artikel Auswählen</button></p>
-    <p><input type='text' id='namap'  placeholder='TeileId' name='teileid' onfocus='blur()'></p>
-    <p><input name="anzahl"> Anzahl</p>
-    <p><input type="submit" name="neuenArtikelanlegen" value="Artikel eintragen"  class="btn btn-info btn-lg"> <input  class="btn btn-danger btn-lg" type="reset"></p>
-
+    <p><button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#myModal' >Artikel Auswählen</button>
+    <input type='text' id='namap'  placeholder='TeileId' name='teileid' onfocus='blur()'>
+    <input name="anzahl" placeholder="Anzahl"> 
+    <input type="submit" name="neuenArtikelanlegen" value="Artikel eintragen"  class="btn btn-info btn-lg"> <input  class="btn btn-danger btn-lg" type="reset"></p>
 </form>
 
 <!-- Modal -->

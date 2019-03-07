@@ -10,14 +10,15 @@
 <title>Auftrag</title>
 
 <style>
+
+
 div.sticky {
-  position: -webkit-sticky;
   position: sticky;
   bottom: 0;
-  padding: 40px;
+  padding: 30px;
   width: 100%;
   font-size: 15px;
-  background-color: #F8F8FF;
+  background-color: #FFFFFF;
   
 }
 * {
