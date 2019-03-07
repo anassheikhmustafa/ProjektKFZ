@@ -8,12 +8,8 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
-  
-
   <title>Kfz</title>
-
-</head>
-<body>
+<div>
   <ul>
     <ul> 
       <li><a href="index.php"> Home(Kunden)</a></li>
@@ -22,14 +18,19 @@
       <li><a href="fahrzeuge/fahrzeug.html">Reperatur</a></li>  
     </ul>
   </ul>
- <button id="modalActivate" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalPreview">
-    Neuer Kunde!
-  </button>
+</div>
+
+</head>
+<body>
+  <button class="button" style="vertical-align:left" data-toggle="modal" data-target="#exampleModalPreview">
+  <span>Kunde</span> 
+</button>
   <?php
     $pdo = new PDO('mysql:host=localhost;dbname=dbkfz', 'root', '');
 
     $sql = "SELECT kundennummer, anrede, titel, vorname, nachname, gebdat, strasse, plz, ort, telefon, email, newsletter, kommentar, kundeseit FROM kunde";
     foreach ($pdo->query($sql) as $row) { ?>
+    
 
 <div class="row">
     <div class="col-md-2">
@@ -47,15 +48,16 @@
 
 <?php } ?>
 
+
+
 <!-- Suche -->
-<div class="container">
-	<div class="row">
-        <div class="search">
-<input type="text" class="form-control input-sm" maxlength="64" placeholder="Search" />
- <button type="submit" class="btn btn-primary btn-sm">Kunden Suche</button>
-</div>
+
+
 <!-- Suche ende -->
 
+                     
+
+  
 <!-- Modal -->
 <div class="modal fade right" id="exampleModalPreview" tabindex="-1" role="dialog" aria-labelledby="exampleModalPreviewLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -178,6 +180,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    
+                  
+   
     
 </body>
 </html>
