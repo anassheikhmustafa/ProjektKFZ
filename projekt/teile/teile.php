@@ -10,7 +10,7 @@
       <li><a href="/kfz/projekt/index.php"> Home(Kunden)</a></li>
       <li><a href="/kfz/projekt/auftrag/auftrag.php">Auftrag</a></li>
       <li><a href="/kfz/projekt/teile/teile.php">Teile</a></li>
-      <li><a href="/kfz/projekt/fahrzeuge/fahrzeug.html">Reparatur</a></li>  
+      <li><a href="/kfz/projekt/rechnungen/rechnung.php">Rechnung</a></li>  
     </ul>
   </ul>
   <div class="alert alert-dark" role="alert"><h1>Artikel-Liste </h1></div>
