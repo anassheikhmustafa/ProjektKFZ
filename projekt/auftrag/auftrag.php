@@ -91,7 +91,7 @@
       <li><a href="/kfz/projekt/index.php">Home(Kunden)</a></li>
       <li><a href="/kfz/projekt/auftrag/auftrag.php">Auftrag</a></li>
       <li><a href="/kfz/projekt/teile/teile.php">Teile</a></li>
-      <li><a href="/kfz/projekt/fahrzeuge/fahrzeug.html">Reperatur</a></li>  
+      <li><a href="/kfz/projekt/fahrzeuge/fahrzeug.html">Reparatur</a></li>  
     </ul>
 </ul>
 </head>
@@ -125,6 +125,22 @@ echo "
     </table>
 </form>";
 
+//Verbindung zur Datenbank herstellen
+$host_name = 'localhost';
+$user_name = 'root';
+$password = '';
+$database = 'dbkfz';
+
+$connect = mysqli_connect($host_name, $user_name, $password, $database);
+mysqli_query($connect, "SET NAMES 'utf8'");
+
+
+// Anzeige aller Datensätze der Tabelle
+$abfrage = "SELECT reparatur.`fzid`, `repid`,`kennzeichen`, `datum`, `marke`, `typ`, `bemerkung`, `vorname`, `kundennummer`, `nachname` FROM reparatur LEFT JOIN fahrzeug on fahrzeug.`fzid` = reparatur.`fzid`
+LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid`  Order By `datum` DESC";
+
+$result = mysqli_query($connect, $abfrage);
+
 
 if (isset($_POST['abgeschickt'])){
     if( empty ($_POST['namap']) == TRUE){
@@ -132,23 +148,7 @@ if (isset($_POST['abgeschickt'])){
 
         echo "<div class='alert alert-danger'>" . "<strong>" . "Hinweis! " . "</strong>" . "Kein Kunde ausgewählt, alle Aufträge werden angezeigt" . "</div>" . "<br>" ;
      
- 
- 
-            //Verbindung zur Datenbank herstellen
-            $host_name = 'localhost';
-            $user_name = 'root';
-            $password = '';
-            $database = 'dbkfz';
-            
-            $connect = mysqli_connect($host_name, $user_name, $password, $database);
-            mysqli_query($connect, "SET NAMES 'utf8'");
-            
-            
-            // Anzeige aller Datensätze der Tabelle
-            $abfrage = "SELECT reparatur.`fzid`, `repid`,`kennzeichen`, `datum`, `marke`, `typ`, `bemerkung`, `vorname`, `kundennummer`, `nachname` FROM reparatur LEFT JOIN fahrzeug on fahrzeug.`fzid` = reparatur.`fzid`
-            LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid`  Order By `datum` DESC";
-            
-            $result = mysqli_query($connect, $abfrage);
+
             $result2 = mysqli_query($connect, $abfrage);
             $result3 = mysqli_query($connect, $abfrage);
             
