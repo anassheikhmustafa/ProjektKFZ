@@ -91,7 +91,7 @@
       <li><a href="/kfz/projekt/index.php">Home(Kunden)</a></li>
       <li><a href="/kfz/projekt/auftrag/auftrag.php">Auftrag</a></li>
       <li><a href="/kfz/projekt/teile/teile.php">Teile</a></li>
-      <li><a href="/kfz/projekt/fahrzeuge/fahrzeug.html">Reparatur</a></li>  
+      <li><a href="/kfz/projekt/rechnungen/rechnung.php">Rechnung</a></li>  
     </ul>
 </ul>
 </head>
