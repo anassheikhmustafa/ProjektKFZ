@@ -2,6 +2,14 @@
 session_start();
 $reparaturId = $_SESSION['repid'];
 
+// 1. Verbindung zur Datenbank herstellen
+$host_name = 'localhost';
+$user_name = 'root';
+$password = '';
+$database = 'dbkfz';
+
+$connect = mysqli_connect($host_name, $user_name, $password, $database);
+
 $rechnungs_nummer = $reparaturId;
 $rechnungs_datum = date("d.m.Y");
 $lieferdatum = date("d.m.Y");
@@ -13,20 +21,36 @@ KFZ-Projekt
 Das A-Team
 Einfach toll :)';
 
-$rechnungs_empfaenger = 'Max Musterman
-Musterstraße 17
-12345 Musterstadt';
+//Session in Variable
+$id = $reparaturId;
+// Datenbankabfrage starten
+$abfrage= "SELECT reparatur.`fzid`, `repid`,`kennzeichen`, `datum`, `marke`, `typ`, `bemerkung`, `vorname`, `kundennummer`, `nachname` FROM reparatur LEFT JOIN fahrzeug on fahrzeug.`fzid` = reparatur.`fzid`
+LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid`  WHERE repid = $id";
+$result = mysqli_query($connect, $abfrage);
+
+// Datensatz in Variablen speichern
+$dsatz = mysqli_fetch_assoc($result);
+$bez2 = $dsatz["bemerkung"];
+$datum2 = $dsatz["datum"];
+$kdnr = $dsatz["kundennummer"];
+$kdnam = $dsatz["nachname"];
+$kdnam2 = $dsatz["vorname"];
+$marke = $dsatz["marke"];
+$typ = $dsatz["typ"];
+$kz = $dsatz["kennzeichen"];
+
+$rechnungs_empfaenger = '<b>' . ' Name: ' . '</b>' . $kdnam . ' ' . $kdnam2 .  ' ' .  '<b>' . ' Reparaturdatum: ' . '</b>' . $datum2 . '<br>' .
+'<b>' . ' Fahrzeug: ' . '</b>' . $marke . ' ' . $typ . '<b>' . ' Bemerkung: ' . '</b>' . $bez2 ;
 
 $rechnungs_footer = "Wir danken für Ihren Auftrag!";
 
-//Auflistung eurer verschiedenen Posten im Format [Produktbezeichnuns, Menge, Einzelpreis]
-$rechnungs_posten = array(
-	array("Produkt 1", 1, 42.50),
-	array("Produkt 2", 5, 5.20),
-	array("Produkt 3", 3, 10.00));
 
-//Höhe eurer Umsatzsteuer. 0.19 für 19% Umsatzsteuer
-$umsatzsteuer = 0.0; 
+//Auflistung eurer verschiedenen Posten im Format [Produktbezeichnuns, Menge, Einzelpreis]
+
+
+$abfrage2 = "SELECT reparaturdetails.`teileid`, `repdetid`,`anzahl`,  `bezeichnung` FROM reparaturdetails LEFT JOIN teile on teile.`teileid` = reparaturdetails.`teileid` where repid=$id";
+
+$result2 = mysqli_query($connect, $abfrage2);
 
 $pdfName = "Auftrag_".$rechnungs_nummer.".pdf";
 
@@ -66,27 +90,22 @@ Auftrag
 <table cellpadding="5" cellspacing="0" style="width: 100%;" border="0">
 	<tr style="background-color: #cccccc; padding:5px;">
 		<td style="padding:5px;"><b>Bezeichnung</b></td>
-		<td style="text-align: center;"><b>Menge</b></td>
-		<td style="text-align: center;"><b>Einzelpreis</b></td>
-		<td style="text-align: center;"><b>Preis</b></td>
+		<td style="padding:5px;"><b>Menge</b></td>
+		<td style="text-align: center;"><b>Bemerkung</b></td>
 	</tr>';
 			
-	
-$gesamtpreis = 0;
+while($dsatz2 = mysqli_fetch_assoc($result2)){
+	$bezeichnung = $dsatz2["bezeichnung"];
+	$me = $dsatz2["anzahl"];
 
-foreach($rechnungs_posten as $posten) {
-	$menge = $posten[1];
-	$einzelpreis = $posten[2];
-	$preis = $menge*$einzelpreis;
-	$gesamtpreis += $preis;
 	$html .= '<tr>
-                <td>'.$posten[0].'</td>
-				<td style="text-align: center;">'.$posten[1].'</td>		
-				<td style="text-align: center;">'.number_format($posten[2], 2, ',', '').' Euro</td>	
-                <td style="text-align: center;">'.number_format($preis, 2, ',', '').' Euro</td>
-              </tr>';
+				<td>'.$bezeichnung.'</td>
+				<td style="padding:5px;">'.$me.'</td>		
+				<td style="text-align: center;">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</td>	
+				</tr>';
 }
 $html .="</table><br><br><br>";
+
 
 
 $html .= nl2br($rechnungs_footer);
