@@ -111,6 +111,8 @@ mysqli_query($connect3, "SET NAMES 'utf8'");
         $kundennrsession = $dsatz2['kundennummer'];
         $_SESSION['kundennummerID'] = $kundennrsession;
         $kdnr2 = $_SESSION['kundennummerID'];
+        $reparaturId = $dsatz2['repid'];
+        $_SESSION['repid'] = $reparaturId;
 
     // Das Bearbeiten-Formular anzeigen
     echo "<p>" . "<b>" . "Kunde: " . "</b>". "$kdnr" . " " . "$kdnam". " " . "<b>" . "Fahrzeug: " . "</b>". "$marke" . " " . "$typ" . " " . "$kz" .  "</p>";
@@ -118,7 +120,10 @@ mysqli_query($connect3, "SET NAMES 'utf8'");
     echo "<p>" . "<b>" . "Bemerkung: "  . "</b>" . "$bez2" . "</p>";
     echo "</form>";
 
-    echo "<a href='auftrag.php'  class='btn btn-secondary btn-lg'>Zurück zur Übersicht</a>";
+    //Zurück zur Übersicht oder drucken
+
+    echo "<a href='auftrag.php'  class='btn btn-secondary btn-lg'>Zurück zur Übersicht</a>";?> <form method='post'><input type="submit" name="drucken" formaction="auftragdruck.php" value="Reparaturauftrag drucken"  class="btn btn-info btn-lg" formtarget="_blank">
+    <?php
 
     echo"</form>";
     echo "<br><br>";
