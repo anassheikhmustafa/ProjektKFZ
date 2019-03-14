@@ -9,6 +9,7 @@ $password = '';
 $database = 'dbkfz';
 
 $connect = mysqli_connect($host_name, $user_name, $password, $database);
+mysqli_query($connect, "SET NAMES 'utf8'");
 
 $rechnungs_nummer = $reparaturId;
 $rechnungs_datum = date("d.m.Y");

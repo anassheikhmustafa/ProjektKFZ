@@ -90,46 +90,46 @@ $connect4 = mysqli_connect($host_name, $user_name, $password, $database);
 mysqli_query($connect, "SET NAMES 'utf8'");
 mysqli_query($connect2, "SET NAMES 'utf8'");
 mysqli_query($connect3, "SET NAMES 'utf8'");
+mysqli_query($connect4, "SET NAMES 'utf8'");
 
-    // Datenbankabfrage starten
-    $id = $name;
-    $abfrage2 = "SELECT reparatur.`fzid`, `repid`,`kennzeichen`, `datum`, `marke`, `typ`, `bemerkung`, `vorname`, `kundennummer`, `nachname` FROM reparatur LEFT JOIN fahrzeug on fahrzeug.`fzid` = reparatur.`fzid`
-    LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid`  WHERE repid = $id";
-    $result2 = mysqli_query($connect2, $abfrage2);
+// Datenbankabfrage starten
+$id = $name;
+$abfrage2 = "SELECT reparatur.`fzid`, `repid`,`kennzeichen`, `datum`, `marke`, `typ`, `bemerkung`, `vorname`, `kundennummer`, `nachname` FROM reparatur LEFT JOIN fahrzeug on fahrzeug.`fzid` = reparatur.`fzid`
+LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid`  WHERE repid = $id";
+$result2 = mysqli_query($connect2, $abfrage2);
 
-    // Datensatz in Variablen speichern
-    $dsatz2 = mysqli_fetch_assoc($result2);
-    $bez2 = $dsatz2["bemerkung"];
-    $datum2 = $dsatz2["datum"];
-    $kdnr = $dsatz2["kundennummer"];
-    $kdnam = $dsatz2["nachname"];
-    $marke = $dsatz2["marke"];
-    $typ = $dsatz2["typ"];
-    $kz = $dsatz2["kennzeichen"];
+// Datensatz in Variablen speichern
+$dsatz2 = mysqli_fetch_assoc($result2);
+$bez2 = $dsatz2["bemerkung"];
+$datum2 = $dsatz2["datum"];
+$kdnr = $dsatz2["kundennummer"];
+$kdnam = $dsatz2["nachname"];
+$marke = $dsatz2["marke"];
+$typ = $dsatz2["typ"];
+$kz = $dsatz2["kennzeichen"];
 
-   
-        $kundennrsession = $dsatz2['kundennummer'];
-        $_SESSION['kundennummerID'] = $kundennrsession;
-        $kdnr2 = $_SESSION['kundennummerID'];
-        $reparaturId = $dsatz2['repid'];
-        $_SESSION['repid'] = $reparaturId;
 
-    // Das Bearbeiten-Formular anzeigen
-    echo "<p>" . "<b>" . "Kunde: " . "</b>". "$kdnr" . " " . "$kdnam". " " . "<b>" . "Fahrzeug: " . "</b>". "$marke" . " " . "$typ" . " " . "$kz" .  "</p>";
-    echo "<p>" . "<b>" . "Reparaturauftrag: " . "</b>". "$id" . "<b>" . " " . "Datum: " . "</b>". "$datum2" . "</p>";
-    echo "<p>" . "<b>" . "Bemerkung: "  . "</b>" . "$bez2" . "</p>";
-    echo "</form>";
+$kundennrsession = $dsatz2['kundennummer'];
+$_SESSION['kundennummerID'] = $kundennrsession;
+$kdnr2 = $_SESSION['kundennummerID'];
+$reparaturId = $dsatz2['repid'];
+$_SESSION['repid'] = $reparaturId;
 
-    //Zurück zur Übersicht oder drucken
+// Das Bearbeiten-Formular anzeigen
+echo "<p>" . "<b>" . "Kunde: " . "</b>". "$kdnr" . " " . "$kdnam". " " . "<b>" . "Fahrzeug: " . "</b>". "$marke" . " " . "$typ" . " " . "$kz" .  "</p>";
+echo "<p>" . "<b>" . "Reparaturauftrag: " . "</b>". "$id" . "<b>" . " " . "Datum: " . "</b>". "$datum2" . "</p>";
+echo "<p>" . "<b>" . "Bemerkung: "  . "</b>" . "$bez2" . "</p>";
+echo "</form>";
 
-    echo "<a href='auftrag.php'  class='btn btn-secondary btn-lg'>Zurück zur Übersicht</a>";?> <form method='post'><input type="submit" name="drucken" formaction="auftragdruck.php" value="Reparaturauftrag drucken"  class="btn btn-info btn-lg" formtarget="_blank">
-    <?php
+//Zurück zur Übersicht oder drucken
 
-    echo"</form>";
-    echo "<br><br>";
+echo "<a href='auftrag.php'  class='btn btn-secondary btn-lg'>Zurück zur Übersicht</a>";?> <form method='post'><input type="submit" name="drucken" formaction="auftragdruck.php" value="Reparaturauftrag drucken"  class="btn btn-info btn-lg" formtarget="_blank">
+<?php
 
-    include "newrep.php";
+echo"</form>";
+echo "<br><br>";
 
+include "newrep.php";
 
 // Anzeige aller Datensätze der Tabelle
 $id = $name;
