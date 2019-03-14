@@ -123,8 +123,8 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 // Dokumenteninformationen
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor($pdfAuthor);
-$pdf->SetTitle('Rechnung '.$rechnungs_nummer);
-$pdf->SetSubject('Rechnung '.$rechnungs_nummer);
+$pdf->SetTitle('Auftrag '.$rechnungs_nummer);
+$pdf->SetSubject('Auftrag '.$rechnungs_nummer);
 
 
 // Header und Footer Informationen
