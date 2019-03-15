@@ -25,6 +25,7 @@
   <button class="button" style="vertical-align:left" data-toggle="modal" data-target="#exampleModalPreview">
   <span>Kunde</span> 
 </button>
+ 
   <?php
     $pdo = new PDO('mysql:host=localhost;dbname=dbkfz', 'root', '');
 
@@ -35,16 +36,20 @@
 <div class="row">
     <div class="col-md-2">
   <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-  <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><?php echo $row['vorname']; ?></a>
+  <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><?php echo $row['anrede']." ".$row['vorname']." ".$row['kundennummer']; ?></a>
 </div>
 </div>
 
-<div class="col-md-6">
-<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" va>
-  <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab"><?php echo $row['kundennummer']." <br /> ".$row['anrede']." <br />".$row['titel']."<br />".$row['vorname']."<br />".$row['nachname']."<br />".$row['gebdat']."<br />".$row['strasse']."<br />".$row['plz']."<br />".$row['ort']."<br />".$row['telefon']."<br />".$row['email']."<br />".$row['newsletter']."<br />".$row['kommentar']."<br />".$row['kundeseit']; ?></div>
+<a href="fahrzeuge/fahrzeugeingabe.php?kundeid=<?= htmlspecialchars(urlencode($row['kundennummer']), ENT_COMPAT, 'UTF-8') ?> "btn btn-primary">Fahrzeug Anlegen</a>
+  <div class="col-md-6">
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" va>
+      <div class="tab-pane fade show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab"><?php echo $row['kundennummer']." <br /> ".$row['anrede']." <br />".$row['titel']."<br />".$row['vorname']."<br />".$row['nachname']."<br />".$row['gebdat']."<br />".$row['strasse']."<br />".$row['plz']."<br />".$row['ort']."<br />".$row['telefon']."<br />".$row['email']."<br />".$row['newsletter']."<br />".$row['kommentar']."<br />".$row['kundeseit']; ?>
+     
+        </div>
+    </div>
+  </div>
 </div>
-</div>
-</div>
+<button type="button" class="btn btn-primary">Primary</button>
 
 <?php } ?>
 
