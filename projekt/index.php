@@ -7,6 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
   <title>Kfz</title>
 <div>
@@ -19,48 +21,39 @@
     </ul>
   </ul>
 </div>
-
 </head>
-<body>
-  <button class="button" style="vertical-align:left" data-toggle="modal" data-target="#exampleModalPreview">
+ <button class="button" style="vertical-align:left" data-toggle="modal" data-target="#exampleModalPreview">
   <span>Kunde</span> 
 </button>
- 
-  <?php
+
+
+<?php
     $pdo = new PDO('mysql:host=localhost;dbname=dbkfz', 'root', '');
 
     $sql = "SELECT kundennummer, anrede, titel, vorname, nachname, gebdat, strasse, plz, ort, telefon, email, newsletter, kommentar, kundeseit FROM kunde";
     foreach ($pdo->query($sql) as $row) { ?>
-    
 
-<div class="row">
-    <div class="col-md-2">
-  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-  <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><?php echo $row['anrede']." ".$row['vorname']." ".$row['kundennummer']; ?></a>
-</div>
-</div>
 
-<a href="fahrzeuge/fahrzeugeingabe.php?kundeid=<?= htmlspecialchars(urlencode($row['kundennummer']), ENT_COMPAT, 'UTF-8') ?> "btn btn-primary">Fahrzeug Anlegen</a>
-  <div class="col-md-6">
-    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" va>
-      <div class="tab-pane fade show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab"><?php echo $row['kundennummer']." <br /> ".$row['anrede']." <br />".$row['titel']."<br />".$row['vorname']."<br />".$row['nachname']."<br />".$row['gebdat']."<br />".$row['strasse']."<br />".$row['plz']."<br />".$row['ort']."<br />".$row['telefon']."<br />".$row['email']."<br />".$row['newsletter']."<br />".$row['kommentar']."<br />".$row['kundeseit']; ?>
-     
-        </div>
+  <div class="w3-container">
+  <button onclick="document.getElementById('id01').style.display='block'" class="w3-button"> <li href="h" ><?php echo $row['anrede']." ".$row['vorname']." ".$row['kundennummer']; ?></li></button>
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+          <p> <li><?php echo  $row['kundennummer']." <br /> ".$row['anrede']." <br />".$row['titel']."<br />".$row['vorname']."<br />".$row['nachname']."<br />".$row['gebdat']."<br />".$row['strasse']."<br />".$row['plz']."<br />".$row['ort']."<br />".$row['telefon']."<br />".$row['email']."<br />".$row['newsletter']."<br />".$row['kommentar']."<br />".$row['kundeseit']; ?></li></p>
+          <a href="fahrzeuge/fahrzeugeingabe.php?kundeid=<?= htmlspecialchars(urlencode($row['kundennummer']), ENT_COMPAT, 'UTF-8') ?> "btn btn-primary">Fahrzeug Anlegen</a>
+      </div>
     </div>
   </div>
 </div>
-<button type="button" class="btn btn-primary">Primary</button>
 
 <?php } ?>
-
-
 
 <!-- Suche -->
 
 
 <!-- Suche ende -->
-
-                     
+          
 
   
 <!-- Modal -->
@@ -68,7 +61,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalPreviewLabel"> Neu Kunde anlegen</h5>
+        <h3 class="modal-title" id="exampleModalPreviewLabel"> Neuen Kunde anlegen</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
