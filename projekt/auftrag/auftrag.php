@@ -147,9 +147,6 @@ if (isset($_POST['abgeschickt'])){
             LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid`  Order By `datum` DESC";
             
             $result = mysqli_query($connect, $abfrage);
-            $result2 = mysqli_query($connect, $abfrage);
-            $result3 = mysqli_query($connect, $abfrage);
-            
             
             echo "<table  id='myTabledd'  border='1' cellpadding='5'>
             <tr class='header'>
@@ -170,12 +167,12 @@ if (isset($_POST['abgeschickt'])){
             while($row = mysqli_fetch_assoc($result)){
                 
                     
-                echo "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
+                echo "<form action='auftragdelet.php' method='post'>";
                 echo"<tr>" .
                     "<td>" ."<input type='hidden' name='auswahledit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftragedit.php' value='Edit' />" . "</td>" .
-                    "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>" .  
-                    "<td>" ."<input type='submit' class='btn btn-danger btn-lg' name='auswahl".$row['repid']."' formaction='auftragdelet.php' value='Delet'>" . "</td>" . 
-                    "<td>" . $row['repid']. "</td>" .
+                    "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>"; ?> 
+                    <td><input type="submit" class="btn btn-danger btn-lg" name="auswahl<?php echo $row['repid']; ?>"  value="Delete" onclick="return confirm('Are you sure you want to delete this item?');" /></td><?php 
+                echo"<td>" . $row['repid']. "</td>" .
                     "<td>" . $row["kundennummer"] . "</td>" .
                     "<td>" . $row["datum"] . "</td>" .
                     "<td>" . $row["marke"] . "</td>" .
@@ -186,10 +183,7 @@ if (isset($_POST['abgeschickt'])){
                 echo "</form>";
             }
             
-            echo "</table>";
-               
-            
-            
+            echo "</table>"; 
     
     }  else {
         
@@ -202,18 +196,9 @@ if (isset($_POST['abgeschickt'])){
 
         $result = mysqli_query($connect, $abfrage);
         $result2 = mysqli_query($connect, $abfrage);
-        $result3 = mysqli_query($connect, $abfrage);
-
         $dsatz3 = mysqli_fetch_assoc($result2);
-      
 
         echo "<br />" . "<div class='alert alert-primary' role='alert'>" . $dsatz3['kundennummer'] . ' '  . $dsatz3['nachname'] . ' '  .  $dsatz3['vorname'] . "</div>" . "<br />";
- 
-        while($dsatz2 = mysqli_fetch_assoc($result2)){
-        
-        $id2 = $dsatz2["repid"];
-        $kdnr2 = $dsatz2["kundennummer"];
-        }
 
         echo "<table  id='myTabledd'  border='1' cellpadding='5'>
         <tr class='header'>
@@ -229,16 +214,15 @@ if (isset($_POST['abgeschickt'])){
         </tr>";
             
         //Inhalt
-      
         while($row = mysqli_fetch_assoc($result)){
             
                 
-            echo "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
+            echo "<form action='auftragdelet.php' method='post'>";
             echo"<tr>" .
                 "<td>" ."<input type='hidden' name='auswahledit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftragedit.php' value='Edit' />" . "</td>" .
-                "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>" .  
-                "<td>" ."<input type='submit' class='btn btn-danger btn-lg' name='auswahl".$row['repid']."' formaction='auftragdelet.php' value='Delet'>" . "</td>" . 
-                "<td>" . $row['repid']. "</td>" .
+                "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>"; ?> 
+                <td><input type="submit" class="btn btn-danger btn-lg" name="auswahl<?php echo $row['repid']; ?>"  value="Delete" onclick="return confirm('Are you sure you want to delete this item?');" /></td><?php 
+            echo"<td>" . $row['repid']. "</td>" .
                 "<td>" . $row["datum"] . "</td>" .
                 "<td>" . $row["marke"] . "</td>" .
                 "<td>" . $row["typ"] . "</td>" .
@@ -261,9 +245,6 @@ LEFT JOIN kunde on kunde.`kundennummer` = fahrzeug.`kundeid`   Order By `datum` 
 
 
 $result = mysqli_query($connect, $abfrage);
-$result2 = mysqli_query($connect, $abfrage);
-$result3 = mysqli_query($connect, $abfrage);
-
 
 echo "<table  id='myTabledd'  border='1' cellpadding='5'>
 <tr class='header'>
@@ -284,12 +265,12 @@ echo "<table  id='myTabledd'  border='1' cellpadding='5'>
 while($row = mysqli_fetch_assoc($result)){
     
         
-    echo "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
+    echo "<form action='auftragdelet.php'  method='post'>";
     echo"<tr>" .
         "<td>" ."<input type='hidden' name='auswahledit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftragedit.php' value='Edit' />" . "</td>" .
-        "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>" .  
-        "<td>" ."<input type='submit' class='btn btn-danger btn-lg' name='auswahl".$row['repid']."' formaction='auftragdelet.php' value='Delet'>" . "</td>" . 
-        "<td>" . $row['repid']. "</td>" .
+        "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>"; ?> 
+         <td><input type="submit" class="btn btn-danger btn-lg" name="auswahl<?php echo $row['repid']; ?>"  value="Delete" onclick="return confirm('Are you sure you want to delete this item?');" /></td><?php 
+    echo"<td>" . $row['repid']. "</td>" .
         "<td>" . $row["kundennummer"] . "</td>" .
         "<td>" . $row["datum"] . "</td>" .
         "<td>" . $row["marke"] . "</td>" .
@@ -314,7 +295,7 @@ echo "</table>";
     $nameue = $dsatz4["nachname"];
     $nameue2 = $dsatz4["vorname"];
     
-    echo "<br />" . "<div class='alert alert-primary' role='alert'>" . $kdnr2 . $nameue. $nameue2 . "</div>" . "<br />";
+    echo "<br />" . "<div class='alert alert-primary' role='alert'>" . $kdnr2 . " " . $nameue. " " . $nameue2 . "</div>" . "<br />";
     
     echo "<table  id='myTabledd'  border='1' cellpadding='5'>
     <tr class='header'>
@@ -332,21 +313,21 @@ echo "</table>";
         
     //Inhalt
     
-        while($row2 = mysqli_fetch_assoc($result4)){
+        while($row = mysqli_fetch_assoc($result4)){
             
                 
-            echo "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
+            echo "<form action='auftragdelet.php' method='post'>";
             echo"<tr>" .
-                "<td>" ."<input type='hidden' name='auswahledit' value='".$row2['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftragedit.php' value='Edit' />" . "</td>" .
-                "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row2['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>" .  
-                "<td>" ."<input type='submit' class='btn btn-danger btn-lg' name='auswahl".$row2['repid']."' formaction='auftragdelet.php' value='Delet'>" . "</td>" . 
-                "<td>" . $row2['repid']. "</td>" .
-                "<td>" . $row2["kundennummer"] . "</td>" .
-                "<td>" . $row2["datum"] . "</td>" .
-                "<td>" . $row2["marke"] . "</td>" .
-                "<td>" . $row2["typ"] . "</td>" .
-                "<td>" . $row2["kennzeichen"] . "</td>" .
-                "<td>" . $row2["bemerkung"] . "</td>" .
+                "<td>" ."<input type='hidden' name='auswahledit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftragedit.php' value='Edit' />" . "</td>" .
+                "<td>" ."<input type='hidden' name='auswahlkopfedit' value='".$row['repid']."'><input type='submit' class='btn btn-info btn-lg'  formaction='auftrageditkopf.php' value='Edit' />" . "</td>"; ?> 
+                <td><input type="submit" class="btn btn-danger btn-lg" name="auswahl<?php echo $row['repid']; ?>"  value="Delete" onclick="return confirm('Wollen Sie diesen Eintrag wirklich löschen?');" /></td><?php 
+            echo"<td>" . $row['repid']. "</td>" .
+                "<td>" . $row["kundennummer"] . "</td>" .
+                "<td>" . $row["datum"] . "</td>" .
+                "<td>" . $row["marke"] . "</td>" .
+                "<td>" . $row["typ"] . "</td>" .
+                "<td>" . $row["kennzeichen"] . "</td>" .
+                "<td>" . $row["bemerkung"] . "</td>" .
                 "</tr>";
             echo "</form>";
         }
@@ -368,12 +349,6 @@ echo "</table>";
       <div class="modal-body">
         <p>Wählen Sie einen Kunden aus!</p>
             <?php
-
-            //Verbindung zur Datenbank herstellen
-            $host_name = 'localhost';
-            $user_name = 'root';
-            $password = '';
-            $database = 'dbkfz';
 
             $connectmodal = mysqli_connect($host_name, $user_name, $password, $database);
             mysqli_query($connectmodal, "SET NAMES 'utf8'");
@@ -430,7 +405,6 @@ echo "</table>";
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 <script> 
-
     // Kundennummer übertrag aus Modal
     $('.pickCustomer').click(function() {
         var name = $(this).val();
