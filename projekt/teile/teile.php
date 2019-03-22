@@ -98,6 +98,6 @@ function myFunction() {
     }       
   }
 }
-</script>";
+</script>
 </body>
 </html>
