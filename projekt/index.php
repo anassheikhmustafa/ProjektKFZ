@@ -22,10 +22,13 @@
   </ul>
 </div>
 </head>
- <button class="button" style="vertical-align:left" data-toggle="modal" data-target="#exampleModalPreview">
+ 
+<button class="button" style="vertical-align:left" data-toggle="modal" data-target="#exampleModalPreview">
   <span>Kunde</span> 
-</button>
-
+</button
+  <div class="w3-container">
+  <input class="w3-input w3-border w3-padding" type="text" placeholder="Search for names.." id="myInput" onkeyup="myFunction()">
+  <ul class="w3-ul w3-margin-top" id="myUL">
 
 <?php
     $pdo = new PDO('mysql:host=localhost;dbname=dbkfz', 'root', '');
@@ -34,27 +37,65 @@
     foreach ($pdo->query($sql) as $row) { ?>
 
 
-  <div class="w3-container">
-  <button onclick="document.getElementById('id01').style.display='block'" class="w3-button"> <li href="h" ><?php echo $row['anrede']." ".$row['vorname']." ".$row['kundennummer']; ?></li></button>
+  <button  onclick="document.getElementById('id01').style.display='inline'" class="w3-button"><?php echo "____________"."<br />".$row['anrede']." ".$row['vorname']."<br />".$row['kundennummer']; ?></button>
+   <ul><a href="fahrzeuge/fahrzeugeingabe.php?kundeid=<?= htmlspecialchars(urlencode($row['kundennummer']), ENT_COMPAT, 'UTF-8') ?> "btn btn-primary">Fahrzeug Anlegen</a></ul>
+    <script>
+      function myFunction() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+          txtValue = li[i].textContent || li[i].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+          } else {
+            li[i].style.display = "none";
+          }
+        }
+      }
+    </script>
+</div>
+   
   <div id="id01" class="w3-modal">
     <div class="w3-modal-content">
       <div class="w3-container">
         <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-          <p> <li><?php echo  $row['kundennummer']." <br /> ".$row['anrede']." <br />".$row['titel']."<br />".$row['vorname']."<br />".$row['nachname']."<br />".$row['gebdat']."<br />".$row['strasse']."<br />".$row['plz']."<br />".$row['ort']."<br />".$row['telefon']."<br />".$row['email']."<br />".$row['newsletter']."<br />".$row['kommentar']."<br />".$row['kundeseit']; ?></li></p>
-          <a href="fahrzeuge/fahrzeugeingabe.php?kundeid=<?= htmlspecialchars(urlencode($row['kundennummer']), ENT_COMPAT, 'UTF-8') ?> "btn btn-primary">Fahrzeug Anlegen</a>
+          <p><?php echo
+            "KdNr.: ".$row['kundennummer']."
+            <br />".$row['anrede']." ".$row['titel']." ".$row['vorname']." ".$row['nachname']."
+            <br />".$row['gebdat']."
+            <br />".$row['strasse']."
+            <br />".$row['plz']."
+            <br />".$row['ort']."
+            <br />".$row['telefon']."
+            <br />".$row['email']."
+            <br />".$row['newsletter']."
+            <br />".$row['kommentar']."
+            <br />".$row['kundeseit']; ?>
+          </p> 
       </div>
     </div>
   </div>
-</div>
+  
 
 <?php } ?>
 
-<!-- Suche -->
 
 
-<!-- Suche ende -->
-          
 
+  <script>
+// Get the modal
+var modal = document.getElementById('id01');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
   
 <!-- Modal -->
 <div class="modal fade right" id="exampleModalPreview" tabindex="-1" role="dialog" aria-labelledby="exampleModalPreviewLabel" aria-hidden="true">
